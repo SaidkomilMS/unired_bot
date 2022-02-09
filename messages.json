@@ -1,0 +1,212 @@
+{
+    "ok_mes": {
+        "ru": "Принято",
+        "uz": "Qabul qilindi",
+        "en": "Received"
+    },
+    "ask_category": {
+        "ru": "🗂 Выберите категорию:",
+        "uz": "🗂 Kategoriyani tanlang:",
+        "en": "🗂 Choose category:"
+    },
+    "start_payments_button": {
+        "ru": "💵 Оплата",
+        "uz": "💵 To'lov",
+        "en": "💵 Payment"
+    },
+    "cancel_button": {
+        "ru": "🚫 Отмена",
+        "uz": "🚫 Bekor qilish",
+        "en": "🚫 Cancel operation"
+    },
+    "back_button": {
+        "ru": "🔙 Назад",
+        "uz": "🔙 Orqaga",
+        "en": "🔙 Back"
+    },
+    "prev_page_button": {
+        "ru": "⏪ Пред.",
+        "uz": "⏪ Avv.",
+        "en": "⏪ Prev."
+    },
+    "next_page_button": {
+        "ru": "⏩ След.",
+        "uz": "⏩ Keyingisi",
+        "en": "⏩ Next"
+    },
+    "cancelled_successfull": {
+        "ru": "❕ Операция успешно отменена",
+        "uz": "❕ Operatsiya muvaffaqiyatli bekor qilindi",
+        "en": "❕ Operation cancelled successfull"
+    },
+    "ask_service": {
+        "ru": "📁 Выберите сервис:",
+        "uz": "📁 Servisni tanlang",
+        "en": "📁 Choose the service"
+    },
+    "ask_phone_number": {
+        "ru": "🔢 Отправьте номер телефона",
+        "uz": "🔢 Telefon raqamni jo'nating",
+        "en": "🔢 Send phone number"
+    },
+    "phone_number_placeholder": {
+        "ru": "⏩ Номер телефона: +ХХХХХХ...",
+        "uz": "⏩ Telefon raqami: +XXXXXX...",
+        "en": "⏩ Phone number: +XXXXXX..."
+    },
+    "send_contact_button": {
+        "ru": "📤 Отправить мой номер",
+        "uz": "📤 Telefon raqamimni jo'natish",
+        "en": "📤 Send my phone_number"
+    },
+    "ask_SMS_code": {
+        "ru": "📨 Отправьте код отправленный через SMS",
+        "uz": "📨 SMS orqali jo'natilgan kodni yuboring",
+        "en": "📨 Send me the code sent by SMS"
+    },
+    "wrong_phone_number": {
+        "ru": "❌ Вы отправили не корректный номер телефона, попробуйте снова",
+        "uz": "❌ Noto'g'ri telefon raqamni yubordingiz, qayta uruning",
+        "en": "❌ You've sent wrong phone number, try again"
+    },
+    "ask_password": {
+        "ru": "🔑 Отправьте свой PIN код",
+        "uz": "🔑 PIN kodingizni jo'nating",
+        "en": "🔑 Send me your PIN code"
+    },
+    "wrong_SMS_code": {
+        "ru": "❌ Вы отправили не правильный код, отправьте верный",
+        "uz": "❌ Noto'g'ri kod yubordingiz, to'g'risini jo'nating",
+        "en": "❌ You've sent wrong code, send right"
+    },
+    "wrong_password": {
+        "ru": "❌ Вы отправили неправильный PIN, повторите попытку",
+        "uz": "❌ Noto'g'ri PIN jo'natdingiz, qayta uruning",
+        "en": "❌ You've sent wron PIN, try again"
+    },
+    "wrong_email": {
+        "ru": "❌ Вы отправили не правильную эл. почту, исправьте и отправьте заново",
+        "uz": "❌ Siz noto'g'ri email yubordingiz, to'g'irlab yuboring",
+        "en": "❌ You've sent incorrect email, correct it and send again"
+    },
+    "start_settings_button": {
+        "ru": "⚙️ Настройки",
+        "uz": "⚙️ Sozlamalar",
+        "en": "⚙️ Settings"
+    },
+    "start_transactions_button":{
+        "ru": "💸 Переводы",
+        "uz": "💸 Pul o'tkazmalari",
+        "en": "💸 Transactions"
+    },
+    "balance_button": {
+        "ru": "💰 Баланс",
+        "uz": "💰 Balans",
+        "en": "💰 Balance"
+    },
+    "currencies_button": {
+        "ru": "💱 Курс валют",
+        "uz": "💱 Valyutalar kursi",
+        "en": "💱 Currencies"
+    },
+    "my_cards_button": {
+        "ru": "💳 Мои карты",
+        "uz": "💳 Mening kartalarim",
+        "en": "💳 My cards"
+    },
+    "extra_actions_button": {
+        "ru": "🕹 Доп. действия",
+        "uz": "🕹 Qo'shimcha amallar",
+        "en": "🕹 Extra actions"
+    },
+    "about_us_button": {
+        "ru": "ℹ️ О Нас",
+        "uz": "ℹ️ Biz haqimizda",
+        "en": "ℹ️ About Us"
+    },
+    "feedback_button": {
+        "ru": "✉️ Обратная связь",
+        "uz": "✉️ Fidbek",
+        "en": "✉️ Feedback"
+    },
+    "main_menu_placeholder": {
+        "ru": "🏠 Главное меню",
+        "uz": "🏠 Bosh menu",
+        "en": "🏠 Main menu"
+    },
+    "login_success": {
+        "ru": "✅ Вы успешно вошли в систему",
+        "uz": "✅ Siz sistemaga muvaffaqiyatli kirdingiz",
+        "en": "✅ Yo've successfull logged in"
+    },
+    "ask_to_try_again": {
+        "ru": "❌ Вы отправили не корректные данные, попробуйте ещё раз",
+        "uz": "❌ Siz noto'g'ri ma`lumot jo'natdingiz, qayta uruning",
+        "en": "❌ You have sent incorrect data, try again"
+    },
+    "ask_name": {
+        "ru": "Отправьте своё имя",
+        "uz": "Ismingizni jo'nating",
+        "en": "Send your name"
+    },
+    "ask_last_name": {
+        "ru": "Отправьте свою фамилию",
+        "uz": "Familiyangizni jo'nating",
+        "en": "Send your last name"
+    },
+    "ask_email": {
+        "ru": "Отправьте свою электронную почту",
+        "uz": "Elektron pochtangizni jo'nating",
+        "en": "Send your e-mail"
+    },
+    "ask_new_password": {
+        "ru": "Придумайте и отправьте PIN, он должен содержать 5 цифр",
+        "uz": "PIN o'ylab topip jo'nating, u 5ta raqamdan iborat bo'lishi kerak",
+        "en": "Create and send a PIN, it must contain 5 digits"
+    },
+    "mobile_number_payment": {
+        "ru": "На телефон",
+        "uz": "Telefonga",
+        "en": "To phone number"
+    },
+    "ask_amount": {
+        "ru": "Отправьте сумму оплаты",
+        "uz": "To'lov summasini jo'nating",
+        "en": "Send amount"
+    },
+    "wrong_amount": {
+        "ru": "Вы отправили неправильную цену, повторите попытку",
+        "uz": "Siz noto'g'ri summa jo'natdingiz, qayta urining",
+        "en": "You've send worng amount please try again"
+    },
+    "ask_payment_confirmation": {
+        "ru": "Подтвердите платёж:\n\nПровайдер: {provider}\nСервис: {service}\nСтоимость: {service_price}\n{fields_info}\nКарта: {card_info}\nБаланс: {balance}",
+        "uz": "To'lovni tasdiqlang:\n\nProvayder: {provider}\nСервис: {service}\nNarxi: {service_price}\n{fields_info}\nKarta: {card_info}\nBalans: {balance}",
+        "en": "Confirm payment\n\nProvider: {provider}\nСервис: {service}\n{fields_info}\nPrice: {service_price}\nCard: {card_info}\nBalance: {balance}"
+    },
+    "confirm_button": {
+        "ru": "✅ Подтвердить",
+        "uz": "✅ Tasdiqlash",
+        "en": "✅ Confirm"
+    },
+    "ask_card_to_pay": {
+        "ru": "💳 Выберите карту",
+        "uz": "💳 Kartani tanlang",
+        "en": "💳 Choose your card"
+    },
+    "chosen_card": {
+        "ru": "Выбрана карта:\n💳 {}",
+        "uz": "Tanlangan karta:\n💳 {}",
+        "en": "Chosen card:\n💳 {}"
+    },
+    "verified_cards_not_found": {
+        "ru": "К сожалению, мы не нашли у вас подтверждённой карты. Вы можете добавлять карты в настройках",
+        "uz": "Afsus, biz sizda tasdiqlangan karta topa olmadik. Siz nastroykalar menyusida karta qo'sha olasiz",
+        "en": "Unfortunately, we did not find a verified card with you. You can add card in settings"
+    },
+    "not_enough_money_in_cards": {
+        "ru": "У вас нет достаточно средств на картах, попробуйте другю сумму или отмените платёж",
+        "uz": "Sizning kartalaringizda yetarlicha pul mablag'i yo'q, boshqa summa kiritib ko'ring yoki to'lovni bekor qiling",
+        "en": "You do not have enough funds on the cards, try another amount or cancel the payment"
+    }
+}
