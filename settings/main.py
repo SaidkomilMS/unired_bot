@@ -83,7 +83,7 @@ async def handle_phone_number(user_id, phone_number, lang, state, user_is_contac
 @has_lang
 async def get_contact(lang, message: Message, state: FSMContext, raw_state):
     phone_number = message.contact.phone_number
-    phone_number = phone_number[1:]
+    phone_number = phone_number[1:] if '+' in phone_number else phone_number
     await handle_phone_number(message.from_user.id, phone_number, lang, state, True)
     await SignIn.next()
     await message.answer(ask_SMS_code[lang], reply_markup=ReplyKeyboardRemove())

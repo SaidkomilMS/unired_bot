@@ -5,7 +5,7 @@ import os
 import django
 from asgiref.sync import sync_to_async
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bot.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "u_bot.settings")
 django.setup()
 
 from settings.models import User

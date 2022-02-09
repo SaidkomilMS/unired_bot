@@ -4,7 +4,7 @@ from aiogram.types import Message, ReplyKeyboardRemove, CallbackQuery
 from aiogram.utils.exceptions import MessageToDeleteNotFound
 from aiogram.dispatcher import FSMContext
 
-from messages import cancelled_successfull, main_menu_placeholder, ask_categroty
+from messages import cancelled_successfull, main_menu_placeholder, ask_category
 from utils import has_bearer, has_lang, requests
 from keyboards import main_menu
 from settings.main import dp
@@ -62,7 +62,7 @@ async def back_to_all_categories(
     categories = requests.get_payment_categories(bearer_token)
 
     await query.message.edit_text(
-        ask_categroty[lang], reply_markup=payment_categories_keyboard(lang, categories)
+        ask_category[lang], reply_markup=payment_categories_keyboard(lang, categories)
     )
 
 
@@ -77,7 +77,7 @@ async def back_to_categories(
     categories = requests.get_payment_categories(bearer_token)
 
     await query.message.edit_text(
-        ask_categroty[lang], reply_markup=payment_categories_keyboard(lang, categories)
+        ask_category[lang], reply_markup=payment_categories_keyboard(lang, categories)
     )
 
 
@@ -93,5 +93,5 @@ async def back_to_providers(
         providers = data["category_data"]["data"][0]["providers"]
 
     await query.message.edit_text(
-        ask_categroty[lang], reply_markup=category_providers(lang, providers)
+        ask_category[lang], reply_markup=category_providers(lang, providers)
     )

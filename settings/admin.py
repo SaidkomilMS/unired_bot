@@ -4,7 +4,7 @@ from .models import User
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ("chat_id")
+    list_display = ("chat_id", )
 
     empty_value_display = "-empty-"
 

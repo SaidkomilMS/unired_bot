@@ -7,7 +7,7 @@ from settings.keyboards import phone_number_keyboard
 
 from messages import (
     ok_mes,
-    ask_categroty,
+    ask_category,
     ask_service,
     ask_phone_number,
     ask_amount,
@@ -83,7 +83,7 @@ async def start_payment(
 
     await save_cur_message(
         await message.answer(
-            ask_categroty[lang],
+            ask_category[lang],
             reply_markup=payment_categories_keyboard(lang, categories, page=page),
         ),
         state,

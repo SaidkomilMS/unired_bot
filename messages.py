@@ -1,7 +1,49 @@
+
 import json
 
 with open("messages.json", "rt", encoding="utf-8") as file:
     all_texts = json.load(file)
 
-for key, value in all_texts.items():
-    exec(f"{key} = {value}")
+
+ok_mes = all_texts['ok_mes']
+ask_category = all_texts['ask_category']
+start_payments_button = all_texts['start_payments_button']
+cancel_button = all_texts['cancel_button']
+back_button = all_texts['back_button']
+prev_page_button = all_texts['prev_page_button']
+next_page_button = all_texts['next_page_button']
+cancelled_successfull = all_texts['cancelled_successfull']
+ask_service = all_texts['ask_service']
+ask_phone_number = all_texts['ask_phone_number']
+phone_number_placeholder = all_texts['phone_number_placeholder']
+send_contact_button = all_texts['send_contact_button']
+ask_SMS_code = all_texts['ask_SMS_code']
+wrong_phone_number = all_texts['wrong_phone_number']
+ask_password = all_texts['ask_password']
+wrong_SMS_code = all_texts['wrong_SMS_code']
+wrong_password = all_texts['wrong_password']
+wrong_email = all_texts['wrong_email']
+start_settings_button = all_texts['start_settings_button']
+start_transactions_button = all_texts['start_transactions_button']
+balance_button = all_texts['balance_button']
+currencies_button = all_texts['currencies_button']
+my_cards_button = all_texts['my_cards_button']
+extra_actions_button = all_texts['extra_actions_button']
+about_us_button = all_texts['about_us_button']
+feedback_button = all_texts['feedback_button']
+main_menu_placeholder = all_texts['main_menu_placeholder']
+login_success = all_texts['login_success']
+ask_to_try_again = all_texts['ask_to_try_again']
+ask_name = all_texts['ask_name']
+ask_last_name = all_texts['ask_last_name']
+ask_email = all_texts['ask_email']
+ask_new_password = all_texts['ask_new_password']
+mobile_number_payment = all_texts['mobile_number_payment']
+ask_amount = all_texts['ask_amount']
+wrong_amount = all_texts['wrong_amount']
+ask_payment_confirmation = all_texts['ask_payment_confirmation']
+confirm_button = all_texts['confirm_button']
+ask_card_to_pay = all_texts['ask_card_to_pay']
+chosen_card = all_texts['chosen_card']
+verified_cards_not_found = all_texts['verified_cards_not_found']
+not_enough_money_in_cards = all_texts['not_enough_money_in_cards']

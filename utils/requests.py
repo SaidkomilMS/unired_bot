@@ -71,6 +71,7 @@ def step_one(mobile, lang):
     data = response.json()
     if data["status"]:
         return data["data"][0]
+    logging.info(f'{data=}')
     return {}
 
 
