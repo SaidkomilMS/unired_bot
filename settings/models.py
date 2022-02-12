@@ -17,7 +17,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=40, null=True)
     
     @classmethod
-    async def exists(cls, chat_id):
+    async def exists(cls, chat_id) -> bool:
         try:
             await sync_to_async(cls.objects.get, thread_sensitive=True)(chat_id=chat_id)
         except Exception:

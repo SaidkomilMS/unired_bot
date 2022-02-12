@@ -95,3 +95,25 @@ def correct_amount(amount_text: str):
     if not amount_text.isdigit():
         return False
     return True
+
+
+def get_balance(data):
+    response = data['data'][0]['response']
+    
+    balance_keys = ['saldo', 'balance']
+    
+    for info in response:
+        if info['key'] in balance_keys:
+            return info['value']
+    return 0
+
+
+def get_amount(data):
+    response = data['data'][0]['response']
+    
+    amount_keys = ['pay_amount', 'payment_amount']
+    
+    for info in response:
+        if info['key'] in amount_keys:
+            return info['value']
+    return 0

@@ -5,6 +5,8 @@ from pprint import pprint
 
 import requests
 
+from . import get_amount, get_balance
+
 details = {
     "ip": "randomIP",
     "imei": "randomIMEI",
@@ -135,6 +137,43 @@ def get_cards(token):
     return {}
 
 
+def get_info(token, provider_id, service_id, data):
+    """
+    Returns the responce, balance and amount
+    """
+    url = "https://mobile.unired.uz/v4/paynet/info"
+    headers = {'Authorization': f'Bearer {token}'}
+    
+    fields_info = data['fields_info']
+    
+    fields = {name: info['value'] for name, info in fields_info.items()}
+    
+    body = {
+        'params': {
+            'receiver': {
+                'id': provider_id,
+                'service_id': service_id,
+                'time': int(time.time()),
+                'fields': fields
+            }
+        }
+    }
+    
+    response = requests.post(url, json=body, headers=headers)
+    data = response.json()
+    if data['status']:
+        result = (data, )
+        
+        balance = get_balance(data)
+        
+        amount = get_amount(data)
+        
+        return data, balance, amount
+    pprint(data)
+    pprint(body)
+    return data, None, None
+
+
 def make_payment(
     token, provider_id, service_id, fields_info, card_token, type_id, reg_id
 ):
@@ -160,7 +199,5 @@ def make_payment(
 
     response = requests.post(url, json=body, headers=headers)
     data = response.json()
-
-    pprint(data, indent=2)
     
     return data

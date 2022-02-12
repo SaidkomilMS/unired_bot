@@ -1,4 +1,5 @@
 import logging
+from pprint import pprint
 import re
 
 from aiogram.types import Message, CallbackQuery, ContentTypes
@@ -31,6 +32,9 @@ from keyboards import cancel_keyboard, back_keyboard, main_menu
 from settings.main import dp
 from utils.payments import (
     field_type_is,
+    get_exact_field,
+    get_info_service,
+    get_useful_info,
     save_cur_message,
     save_field,
     check_field,
@@ -53,6 +57,7 @@ from .keyboards import (
     amount_keyboard,
     cards_keyboard,
     category_providers,
+    inline_keyboard_from_keys,
     payment_categories_keyboard,
     services_keyboard,
     confirmation_keyboard,
@@ -62,6 +67,7 @@ from .back_buttons import back_to_all_categories, cancel_all
 
 card_tokens = {}
 card_types = {}
+fields_info = {}
 
 
 @dp.message_handler(payment_start_filter)
@@ -136,7 +142,7 @@ async def get_category(
     await Payment.next()
 
 
-async def ask_first_field(lang, service, query, state):
+async def ask_first_field(lang, service, query: CallbackQuery, state):
     fields = service["fields"]
     fields_state = 0
 
@@ -153,6 +159,11 @@ async def ask_first_field(lang, service, query, state):
     await Payment.fields.set()
 
     cur_field = fields[fields_state]
+    
+    if cur_field['fieldType'] == 'COMBOBOX':
+        await set_up_keyboard_paginator(lang, cur_field['fieldValues'], inline_keyboard_from_keys, state)
+        await query.message.edit_text(cur_field['title'][lang], reply_markup=inline_keyboard_from_keys(lang, cur_field['fieldValues']))
+        return
 
     await query.answer()
     await query.message.edit_text(
@@ -219,10 +230,11 @@ async def get_service(lang, query: CallbackQuery, state: FSMContext, raw_state):
     await ask_first_field(lang, service, query, state)
 
 
-async def ask_confirmation(message, lang, card_name, card_mask, balance, state):
+async def ask_confirmation(message: Message, lang, card_name, card_mask, balance, state):
     await Payment.confirmation.set()
     async with state.proxy() as data:
-        fields_info = data["fields_info"]
+        # fields_info = data["fields_info"]
+        fields_info = fields_info.get(message.chat.id)
         fields_str = "\n".join(
             [f'{field["title"]}: {field["value"]}' for field in fields_info.values()]
         )
@@ -252,7 +264,16 @@ async def ask_cards(message: Message, lang, bearer, state):
     cards = requests.get_cards(bearer)
     amount = None
     async with state.proxy() as data:
-        amount = data["fields_info"]["amount"]["value"]
+        if fields_info.get(message.chat.id) and fields_info.get(message.chat.id, {}).get('amount'):
+            amount = fields_info.get(message.chat.id, {}).get('amount', {}).get('value')
+        else:
+            service = get_info_service(data['providers']['services'])
+            service_id = service['id']
+            response, balance, amount = requests.get_info(bearer, data['provider_data']['id'], service_id, fields_info.get(message.chat.id, {}))
+            field = get_exact_field(data['service']['fields'], 'MONEY')
+            if not fields_info.get(message.chat.id):
+                fields_info.__setitem__(message.chat.id, dict())
+            save_field(fields_info[message.chat.id], field['name'], field['title'][lang], amount)
         amount = int(amount)
 
     cards = [card for card in cards if card["is_verified"]]
@@ -291,6 +312,77 @@ async def ask_cards(message: Message, lang, bearer, state):
     )
 
 
+async def send_info(lang, bearer, message: Message, state: FSMContext):
+    async with state.proxy() as data:
+        msg = data.get("cur_message")
+        if isinstance(msg, Message):
+            msg.edit_reply_markup(None)
+    
+        response, balance, amount = requests.get_info(bearer, data['provider_data']['category_id'], data['service']['id'], fields_info.get(message.chat.id))
+    
+    if not response['status']:
+        await message.answer(response['message'][lang])
+        return
+    
+    useful_info = get_useful_info(response['data'][0]['response'])
+    
+    lang = 'ru' if lang == 'en' else lang
+    
+    key = 'label' + lang.title()
+    value = 'value'
+    
+    string_info = '\n'.join([f'{info[key]}: {info[value]}' for info in useful_info if info[value]])
+    await message.answer(string_info)
+    
+    await state.finish()
+    
+    await message.answer(main_menu_placeholder[lang], reply_markup=main_menu(lang))
+
+
+@dp.callback_query_handler(state=Payment.fields)
+@has_bearer
+@has_lang
+async def get_callback_query_field(lang, bearer, query: CallbackQuery, state: FSMContext, raw_state):
+    await query.answer()
+    await query.message.edit_reply_markup(None)
+    async with state.proxy() as data:
+        fields = data['fields']
+        fields_state = data['fields_state']
+        cur_field = fields[fields_state]
+        value = query.data
+        
+        if not fields_info.get(query.from_user.id):
+            fields_info.__setitem__(query.from_user.id, dict())
+        
+        save_field(fields_info.get(query.from_user.id), cur_field['name'], cur_field['title'][lang], value)
+        fields_state = get_next_field_state(fields_state + 1, fields)
+        
+        if len(fields) <= fields_state:
+            if data['service']['type_id'] == 1:
+                await ask_cards(query.message, lang, bearer, state)
+            else:
+                await send_info(lang, bearer, query.message, state)
+            return
+        cur_field = fields[fields_state]
+        data['fields_state'] = fields_state
+        service = data['service']
+    
+    if cur_field['fieldType'] == 'COMBOBOX':
+        await set_up_keyboard_paginator(lang, cur_field['fieldValues'], inline_keyboard_from_keys, state)
+        await query.message.edit_text(cur_field['title'][lang], reply_markup=inline_keyboard_from_keys(lang, cur_field['fieldValues']))
+        return
+    
+    text = cur_field['title'][lang]
+    reply_markup = cancel_keyboard(lang)
+    
+    if field_type_is('PHONE', cur_field):
+        reply_markup = phone_number_keyboard(lang, add_users_number=True, add_cancel=True, chat_id=query.from_user.id)
+    elif field_type_is('MONEY', cur_field):
+        reply_markup = amount_keyboard(lang, service)
+    
+    await query.message.answer(text, reply_markup=reply_markup)
+
+
 @dp.message_handler(state=Payment.fields)
 @has_bearer
 @has_lang
@@ -305,8 +397,11 @@ async def get_field(lang, bearer_token, message: Message, state: FSMContext, raw
 
         if not await check_field(cur_field, value, message, lang):
             return
+        
+        if not fields_info.get(message.from_user.id):
+            fields_info.__setitem__(message.from_user.id, dict())
 
-        save_field(data, cur_field["name"], cur_field["title"][lang], value)
+        save_field(fields_info[message.chat.id], cur_field["name"], cur_field["title"][lang], value)
 
         fields_state = get_next_field_state(fields_state + 1, fields)
 
@@ -314,13 +409,18 @@ async def get_field(lang, bearer_token, message: Message, state: FSMContext, raw
             if data['service']['type_id'] == 1:
                 await ask_cards(message, lang, bearer_token, state)
             else:
-                ...
+                await send_info(lang, bearer_token, message, state)
             return
 
         cur_field = fields[fields_state]
 
         data["fields_state"] = fields_state
         service = data['service']
+    
+    if cur_field['fieldType'] == 'COMBOBOX':
+        await set_up_keyboard_paginator(lang, cur_field['fieldValues'], inline_keyboard_from_keys, state)
+        await message.answer(cur_field['title'][lang], reply_markup=inline_keyboard_from_keys(lang, cur_field['fieldValues']))
+        return
     
     text = cur_field['title'][lang]
     reply_markup = cancel_keyboard(lang)
@@ -423,7 +523,7 @@ async def get_confrirmation(
     async with state.proxy() as data:
         provider = data["provider_data"]
         service = data["service"]
-        fields_info = data["fields_info"]
+        fields_info = fields_info.get(query.from_user.id)
     card_token = card_tokens.get(query.from_user.id, '')
     type_id = card_types.get(query.from_user.id, '')
 

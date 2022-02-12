@@ -4,7 +4,32 @@ import re
 from messages import ask_to_try_again
 
 
+useful_info_keys = (
+    'provider_name',
+    'service_name',
+    'client_id',
+    'client',
+    'balance',
+    'customer_code',
+    'fio',
+    'address',
+    'last_paid_date',
+    'last_paid',
+    'telefon'
+)
+
+
+def get_useful_info(info_list):
+    result = []
+    for info in info_list:
+        if info['key'].lower() in useful_info_keys:
+            result.append(info)
+    
+    return result
+
+
 def save_field(data, name, title, value):
+    logging.info(f'saving: {repr(value)} for {name}')
     if not data.get("fields_info"):
         data["fields_info"] = {}
 
@@ -33,6 +58,12 @@ def get_next_field_state(state, fields):
 def get_paying_service(services):
     for service in services:
         if service["type_id"] == 1:
+            return service
+    
+    
+def get_info_service(services):
+    for service in services:
+        if service['type_id'] == 2:
             return service
 
 

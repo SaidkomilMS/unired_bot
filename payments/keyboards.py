@@ -108,6 +108,14 @@ def category_providers(lang, providers, page=None):
     return markup
 
 
+def inline_keyboard_from_keys(lang, values):
+    markup = InlineKeyboardMarkup()
+    elems = [(str(value['key']), value['title']) for value in values]
+    markup = inline_markup(elems, markup, lang=lang)
+    markup.add(InlineKeyboardButton(back_button[lang], callback_data='back'))
+    return markup
+
+
 def services_keyboard(lang, services):
     markup = InlineKeyboardMarkup()
     markup.add(
