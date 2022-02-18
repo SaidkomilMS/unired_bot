@@ -82,12 +82,12 @@ def has_bearer(func):
 
 
 async def set_up_keyboard_paginator(lang, elems, keyboard, state):
-    if not len(elems) > 12:
-        return
     async with state.proxy() as data:
         data["page"] = 0
         data["keyboard"] = keyboard
         data["keyboard_args"] = lang, elems
+        if not len(elems) > 12:
+            return
         return 0
 
 

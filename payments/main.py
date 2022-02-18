@@ -231,6 +231,7 @@ async def get_service(lang, query: CallbackQuery, state: FSMContext, raw_state):
 
 
 async def ask_confirmation(message: Message, lang, card_name, card_mask, balance, state):
+    global fields_info
     await Payment.confirmation.set()
     async with state.proxy() as data:
         # fields_info = data["fields_info"]
@@ -353,6 +354,11 @@ async def get_callback_query_field(lang, bearer, query: CallbackQuery, state: FS
         
         if not fields_info.get(query.from_user.id):
             fields_info.__setitem__(query.from_user.id, dict())
+
+        text_of_btn = [elem['title'] for elem in data['keyboard_args'][1] if str(elem['key']) == value][0]
+        await query.message.edit_text(
+            f'{query.message.text}: {text_of_btn}'
+        )
         
         save_field(fields_info.get(query.from_user.id), cur_field['name'], cur_field['title'][lang], value)
         fields_state = get_next_field_state(fields_state + 1, fields)
@@ -369,7 +375,8 @@ async def get_callback_query_field(lang, bearer, query: CallbackQuery, state: FS
     
     if cur_field['fieldType'] == 'COMBOBOX':
         await set_up_keyboard_paginator(lang, cur_field['fieldValues'], inline_keyboard_from_keys, state)
-        await query.message.edit_text(cur_field['title'][lang], reply_markup=inline_keyboard_from_keys(lang, cur_field['fieldValues']))
+        new_text = f"{query.message.text}\n{cur_field['title'][lang]}"
+        await query.message.edit_text(new_text, reply_markup=inline_keyboard_from_keys(lang, cur_field['fieldValues']))
         return
     
     text = cur_field['title'][lang]
@@ -513,8 +520,9 @@ async def get_card(lang, bearer, query: CallbackQuery, state: FSMContext, raw_st
 async def get_confrirmation(
     lang, bearer, query: CallbackQuery, state: FSMContext, raw_state
 ):
+    global fields_info
     qdata = query.data
-    query.answer()
+    await query.answer()
 
     if qdata != "confirm":
         await back_to_all_categories(lang, bearer, query, state, raw_state)
