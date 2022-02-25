@@ -117,3 +117,7 @@ def get_amount(data):
         if info['key'] in amount_keys:
             return info['value']
     return 0
+
+
+def image_mode(url):
+    return f'<a href="{url}"> </a>'

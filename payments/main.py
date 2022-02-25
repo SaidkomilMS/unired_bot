@@ -1,5 +1,4 @@
 import logging
-from pprint import pprint
 import re
 
 from aiogram.types import Message, CallbackQuery, ContentTypes
@@ -26,7 +25,7 @@ from utils import (
     has_bearer,
     has_lang,
     requests,
-    set_up_keyboard_paginator,
+    set_up_keyboard_paginator, image_mode,
 )
 from keyboards import cancel_keyboard, back_keyboard, main_menu
 from settings.main import dp
@@ -113,6 +112,7 @@ async def get_category(
 
     category_data = requests.get_category_providers(category_id, bearer_token)
     providers = category_data["data"][0]["providers"]
+    image_url = category_data['data'][0]['image']
 
     page = (
         await set_up_keyboard_paginator(lang, providers, category_providers, state)
@@ -127,17 +127,22 @@ async def get_category(
     if category_id == 1:
         await MobilePayment.first()
         await query.message.answer(
+            # image_mode(image_url) + ask_phone_number[lang],
             ask_phone_number[lang],
             reply_markup=await phone_number_keyboard(
                 lang, add_users_number=True, add_cancel=True, chat_id=query.from_user.id
             ),
+            parse_mode='html'
         )
         await query.message.delete()
         return
 
     await query.answer()
     await query.message.edit_text(
-        ask_service[lang], reply_markup=category_providers(lang, providers, page=page)
+        # image_mode(image_url) + ask_service[lang],
+        ask_service[lang],
+        reply_markup=category_providers(lang, providers, page=page),
+        parse_mode='html'
     )
     await Payment.next()
 
