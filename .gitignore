@@ -1,4 +1,5 @@
 .env
+launch.json
 *.pyc
 **/__pycache__/
 __pycache__/
