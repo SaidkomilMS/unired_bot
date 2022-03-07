@@ -208,5 +208,15 @@
         "ru": "У вас нет достаточно средств на картах, попробуйте другю сумму или отмените платёж",
         "uz": "Sizning kartalaringizda yetarlicha pul mablag'i yo'q, boshqa summa kiritib ko'ring yoki to'lovni bekor qiling",
         "en": "You do not have enough funds on the cards, try another amount or cancel the payment"
+    },
+    "edit_payment": {
+        "ru": "✏️ Редактировать (Изменить)",
+        "uz": "✏️ Tahrirlash",
+        "en": "✏️ Edit"
+    },
+    "ask_field": {
+        "ru": "Выберите поле для редактирования:",
+        "uz": "Nimani o'zgartirishingizni tanlang:",
+        "en": "Choose what you're going to edit:"
     }
 }

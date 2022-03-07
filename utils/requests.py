@@ -143,6 +143,8 @@ def get_info(token, provider_id, service_id, data):
     """
     url = "https://mobile.unired.uz/v4/paynet/info"
     headers = {'Authorization': f'Bearer {token}'}
+
+    print(data)
     
     fields_info = data['fields_info']
     

@@ -13,6 +13,7 @@ from messages import (
     mobile_number_payment,
     confirm_button,
     cancel_button,
+    edit_payment
 )
 
 
@@ -134,6 +135,9 @@ def confirmation_keyboard(lang):
     markup = InlineKeyboardMarkup()
     markup.add(
         InlineKeyboardButton(confirm_button[lang], callback_data="confirm"),
+        InlineKeyboardButton(edit_payment[lang], callback_data="edit"),
+    )
+    markup.add(
         InlineKeyboardButton(cancel_button[lang], callback_data="cancel"),
     )
     return markup
@@ -143,4 +147,11 @@ def cards_keyboard(lang, cards, page=None):
     markup = InlineKeyboardMarkup()
     elems = [(card["token"], f"💳{card['name']}: {card['mask']}") for card in cards]
     markup = inline_markup(elems, markup, page=page, lang=lang)
+    return markup
+
+
+def fields_choosing(lang, fields):
+    markup = InlineKeyboardMarkup()
+    for index, field in enumerate(fields):
+        markup.add(InlineKeyboardButton(field['title'][lang], callback_data=f"field={index}"))
     return markup

@@ -7,6 +7,8 @@ class Payment(StatesGroup):
     service = State()
     fields = State()
     card = State()
+    field = State()
+    value = State()
     confirmation = State()
 
 

@@ -18,7 +18,8 @@ from messages import (
     chosen_card,
     verified_cards_not_found,
     not_enough_money_in_cards,
-    main_menu_placeholder
+    main_menu_placeholder,
+    ask_field
 )
 from utils import (
     correct_amount,
@@ -56,6 +57,7 @@ from .keyboards import (
     amount_keyboard,
     cards_keyboard,
     category_providers,
+    fields_choosing,
     inline_keyboard_from_keys,
     payment_categories_keyboard,
     services_keyboard,
@@ -273,13 +275,13 @@ async def ask_cards(message: Message, lang, bearer, state):
         if fields_info.get(message.chat.id) and fields_info.get(message.chat.id, {}).get('amount'):
             amount = fields_info.get(message.chat.id, {}).get('amount', {}).get('value')
         else:
-            service = get_info_service(data['providers']['services'])
-            service_id = service['id']
-            response, balance, amount = requests.get_info(bearer, data['provider_data']['id'], service_id, fields_info.get(message.chat.id, {}))
-            field = get_exact_field(data['service']['fields'], 'MONEY')
             if not fields_info.get(message.chat.id):
                 fields_info.__setitem__(message.chat.id, dict())
             save_field(fields_info[message.chat.id], field['name'], field['title'][lang], amount)
+            service = get_info_service(data['provider_data']['services'])
+            service_id = service['id']
+            response, balance, amount = requests.get_info(bearer, data['provider_data']['id'], service_id, fields_info.get(message.chat.id, {}))
+            field = get_exact_field(data['service']['fields'], 'MONEY')
         amount = int(amount)
 
     cards = [card for card in cards if card["is_verified"]]
@@ -529,14 +531,20 @@ async def get_confrirmation(
     qdata = query.data
     await query.answer()
 
-    if qdata != "confirm":
+    if qdata == "cancel":
         await back_to_all_categories(lang, bearer, query, state, raw_state)
         return
 
     async with state.proxy() as data:
         provider = data["provider_data"]
         service = data["service"]
-        fields_info = fields_info.get(query.from_user.id)
+        if qdata == "edit":
+            required_editable_fields = [field for field in service['fields'] if field['required'] and not field['readOnly']]
+            data['re_fields'] = required_editable_fields
+            await Payment.field.set()
+            await query.message.answer(ask_field[lang], reply_markup=fields_choosing(lang, required_editable_fields))
+            return
+    fields_info = fields_info.get(query.from_user.id)
     card_token = card_tokens.get(query.from_user.id, '')
     type_id = card_types.get(query.from_user.id, '')
 
